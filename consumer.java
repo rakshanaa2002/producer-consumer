@@ -1,4 +1,3 @@
-
 public class consumer extends Thread {
     share s;
     public consumer(share s)
@@ -8,7 +7,6 @@ public class consumer extends Thread {
     @Override
     public void run()
     {
-        for(int i=1;i<=10;i++){
             try {
                 int v=s.con();
                 System.out.println("Consumed-->"+v);
@@ -16,6 +14,5 @@ public class consumer extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
     }
 }
