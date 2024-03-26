@@ -18,17 +18,16 @@ public class share {
     }
     public static void main(String[] args) throws InterruptedException {
         share s=new share();
-        int p = 5;
-        int c = 10;
-        ExecutorService pe = Executors.newFixedThreadPool(p);
-        ExecutorService ce = Executors.newFixedThreadPool(c);
-        for (int i = 0; i < p; i++) {
+        int p=5;
+        int c=10;
+        ExecutorService pe =Executors.newFixedThreadPool(p);
+        ExecutorService ce =Executors.newFixedThreadPool(c);
+        for (int i=0;i<p;i++) {
             pe.submit(new producer(s));
         }
-        for (int i = 0; i < c; i++) {
+        for (int i=0;i<c;i++) {
             ce.submit(new consumer(s));
         }
-
         pe.shutdown();
         ce.shutdown();
     }
