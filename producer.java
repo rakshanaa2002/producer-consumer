@@ -1,5 +1,4 @@
 import java.util.Random;
-
 public class producer extends Thread{
     share s;
     public producer(share s)
@@ -9,16 +8,17 @@ public class producer extends Thread{
     @Override
     public void run()
     {
-        for(int i=1;i<=10;i++){
+        try
+        {
             Random r=new Random();
-            int val=r.nextInt(1000);
+            int val=r.nextInt(100);
             s.pro(val);
             System.out.println("Produced-->"+val);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
         }
     }
 }
