@@ -1,18 +1,28 @@
 public class consumer extends Thread {
-    share s;
-    public consumer(share s)
+    share share;
+    int consumerNum;
+    public consumer(share share,int consumerNum)
     {
-        this.s=s;
+        this.share=share;
+        this.consumerNum=consumerNum;
     }
     @Override
     public void run()
     {
-            try {
-                int v=s.con();
-                System.out.println("Consumed-->"+v);
+        try{
+            while(true){
+                synchronized(share){
+                    while(share.data.isEmpty())
+                        share.wait();
+                    int value=share.data.poll();
+                    System.out.println(consumerNum+" Consumed --> "+value);
+                    share.notifyAll();
+                }
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            }   
+        } 
+        catch(InterruptedException e){
+            e.printStackTrace();
+        }
     }
 }
