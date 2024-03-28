@@ -1,7 +1,8 @@
-public class consumer extends Thread {
+public class consumer extends Thread
+{
     share share;
     int consumerNum;
-    public consumer(share share,int consumerNum)
+    public consumer(share share, int consumerNum)
     {
         this.share=share;
         this.consumerNum=consumerNum;
@@ -9,19 +10,17 @@ public class consumer extends Thread {
     @Override
     public void run()
     {
-        try{
-            while(true){
-                synchronized(share){
-                    while(share.data.isEmpty())
-                        share.wait();
-                    int value=share.data.poll();
-                    System.out.println(consumerNum+" Consumed --> "+value);
-                    share.notifyAll();
-                }
-                Thread.sleep(1000);
-            }   
-        } 
-        catch(InterruptedException e){
+        try
+        {
+            while (true)
+            {
+                while(share.data.isEmpty())
+                    Thread.sleep(1);
+                Integer value = share.data.remove();
+                System.out.println(consumerNum+" Consumed --> "+value);
+                Thread.sleep(100);
+            }
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
