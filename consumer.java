@@ -18,7 +18,7 @@ public class consumer extends Thread
                     Thread.sleep(1);
                 Integer value = share.data.remove();
                 System.out.println(consumerNum+" Consumed --> "+value);
-                Thread.sleep(100);
+                Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
