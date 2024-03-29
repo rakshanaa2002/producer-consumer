@@ -16,7 +16,7 @@ public class consumer extends Thread
             {
                 while(share.data.isEmpty())
                     Thread.sleep(1);
-                Integer value = share.data.remove();
+                int value = share.data.remove();
                 System.out.println(consumerNum+" Consumed --> "+value);
                 Thread.sleep(1000);
             }
