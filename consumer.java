@@ -9,25 +9,27 @@ public class consumer extends Thread
     }
 
     @Override
-    public void run() {
-        // try
-        // {
-            synchronized(share)
-                {
-            while (true) 
+    public void run()
+    {
+        while (true)
+        {
+            try
             {
-                
-                //     while(share.data.isEmpty())
-                //          share.wait();
-                    Integer value = share.data[share.top];
-                    System.out.println(consumerNum+" Consumed --> "+value+share.top);
-                    share.top--;
-        //             Thread.sleep(50);
-        //             share.notifyAll();
+                share.lock.lock();
+                while(share.top<=0){
+                    share.empty.await();
                 }
-        //     }
-        // } catch (InterruptedException e) {
-        //     e.printStackTrace();
+                int value = share.data[--share.top];
+                System.out.println(consumerNum+" Consumed --> "+value);
+                share.full.signal();
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            finally{
+                share.lock.unlock();
+            }
         }
     }
 }
