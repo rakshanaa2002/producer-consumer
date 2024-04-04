@@ -1,5 +1,7 @@
 // import java.util.concurrent.ArrayBlockingQueue;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -16,15 +18,15 @@ public class share
         share share=new share();
         int producerNum=3;
         int consumeNum=6;
-        for (int i=1;i<=producerNum;i++)
-        {
+        ExecutorService executor =Executors.newFixedThreadPool(producerNum+consumeNum);
+        for (int i=1;i<=producerNum;i++) {
             producer producer=new producer(share,i);
-            producer.start();
+            executor.submit(producer);
         }
-        for (int i=1;i<=consumeNum;i++)
-        {
+        for (int i=1;i<=consumeNum;i++) {
             consumer consumer=new consumer(share,i);
-            consumer.start();
+            executor.submit(consumer);
         }
+        executor.shutdown();
     }
 }
