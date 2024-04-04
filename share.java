@@ -1,7 +1,14 @@
 // import java.util.concurrent.ArrayBlockingQueue;
+
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class share
 {
     // ArrayBlockingQueue<Integer> data=new ArrayBlockingQueue<>(10);
+    ReentrantLock lock=new ReentrantLock();
+    Condition full=lock.newCondition();
+    Condition empty=lock.newCondition();
     int[] data=new int[100];
     int top=0;
     public static void main(String[] args)
@@ -16,7 +23,7 @@ public class share
         }
         for (int i=1;i<=consumeNum;i++)
         {
-            consumer consumer = new consumer(share,i);
+            consumer consumer=new consumer(share,i);
             consumer.start();
         }
     }
