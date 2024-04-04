@@ -1,10 +1,11 @@
 import java.util.Random;
 
-public class producer extends Thread {
+public class producer extends Thread
+{
     share share;
     int producerNum;
 
-    public producer(share share, int producerNum) {
+    public producer(share share, int producerNum){
         this.share = share;
         this.producerNum = producerNum;
     }
@@ -12,30 +13,28 @@ public class producer extends Thread {
     @Override
     public void run()
     {
-        // try
-        // {
-            Random random=new Random();
-            synchronized(share){
-            while(true)
+        Random random=new Random();
+        while(true)
+        {
+            try
             {
-                
-                //     if(share.data.size()>=10){
-                //         Thread.sleep(10);
-                //     }
-                    // else{
-                        int value=random.nextInt(10);
-                        share.data[share.top++]=value;
-                        System.out.println(producerNum+" Produced --> "+value);
-                        // share.notifyAll();
-                        // Thread.sleep(500);
-                    }
-                        
-                 }
-            // }
-        // }
-        // catch (InterruptedException e)
-        // {
-        //     e.printStackTrace();
-        // }
+                share.lock.lock();
+                while(share.top>=10){
+                    share.full.await();
+                }
+                int value=random.nextInt(100);
+                share.data[share.top]=value;
+                share.top+=1;
+                System.out.println(producerNum+" Produced --> "+value);
+                share.empty.signal();
+            }    
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            finally{
+                share.lock.unlock();
+            }
+        }
     }
 }
